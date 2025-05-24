@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings" // kami menggunakan strings untuk memudahkan pencocokan data
 )
 
 type Pengguna struct {
@@ -72,6 +73,73 @@ func tampilMenuPengguna(pengguna *DataPengguna, jumlah *int) {
 	for i := 0; i < *jumlah; i++ {
 		fmt.Printf("%d. %s \n", i+1, pengguna[i].nama)
 	}
+}
+
+// Procedure Menambahkan Data Pengguna
+func tambahData(pengguna *DataPengguna, jumlah *int) {
+	// {I.S. Terdefinisi array pengguna sebanyak jumlah data.
+	// F.S. Menambahkan satu data pengguna baru ke dalam array, dan memperbarui nilai jumlah}
+	if *jumlah >= MAX_PENGGUNA {
+		fmt.Println("Data sudah penuh")
+		return
+	}
+
+	fmt.Print("Masukkan Nama:  ")
+	fmt.Scanln(&pengguna[*jumlah].nama)
+
+	fmt.Print("Masukkan minat (contoh: Teknologi, Seni, Bisnis, dll):  ")
+	fmt.Scanln(&pengguna[*jumlah].minat)
+
+	fmt.Print("Masukkan keahlian (contoh: Coding, Desain, Analisis Data, dll): ")
+	fmt.Scanln(&pengguna[*jumlah].keahlian)
+
+	// menambahkan indeks atau penghitung
+	*jumlah++
+}
+
+// Procedure Rekomendasi Karier
+func lihatRekomen(pengguna DataPengguna, jumlah int) {
+	// {I.S. Terdefinisi array pengguna sebanyak jumlah data.
+	// F.S. Menampilkan daftar pengguna, meminta pilihan pengguna dari user, dan menampilkan rekomendasi karier berdasarkan minat dan keahlian pengguna tersebut.}
+	var angka int
+	tampilMenuPengguna(&pengguna, &jumlah)
+	fmt.Print("Pilih nomor pengguna untuk melihat rekomendasi: ")
+	fmt.Scan(&angka)
+
+	if angka < 1 || angka > jumlah {
+		fmt.Println("Nomor tidak valid.")
+		return
+	}
+
+	userTerpilih := pengguna[angka-1]
+	tampilkanRekomendasi(userTerpilih)
+
+	var kembali string
+	fmt.Print("\nKetik apa saja lalu tekan ENTER untuk kembali ke menu utama: ")
+	fmt.Scanln(&kembali)
+	fmt.Println("Kembali ke menu utama...")
+}
+
+// Logic menggunakan algoritma sequential search untuk mencocokan data pengguna dan karier
+func tampilkanRekomendasi(p Pengguna) {
+	// {I.S. Terdefinisi sebuah data pengguna p dengan atribut nama, minat, dan keahlian.
+	// F.S. Menampilkan daftar karier yang sesuai dengan minat dan keahlian pengguna, atau pesan jika tidak ada yang cocok. Menunggu input sebelum kembali ke menu utama.}
+	fmt.Printf("=== Rekomendasi Karier untuk %s  ===\n", p.nama)
+
+	cocokDitemukan := false
+	for i := 0; i < MAX_KARIER; i++ {
+		if strings.ToLower(p.minat) == strings.ToLower(daftarKarier[i].minat) && strings.ToLower(p.keahlian) == strings.ToLower(daftarKarier[i].keahlian) {
+			fmt.Println("- " + daftarKarier[i].nama)
+			cocokDitemukan = true
+		}
+	}
+	if !cocokDitemukan {
+		fmt.Println("Maaf, belum ada rekomendasi yang cocok.")
+	}
+
+	var kembali string
+	fmt.Print("\n Ketik apa saja lalu tekan ENTER untuk kembali ke menu utama: ")
+	fmt.Scan(&kembali)
 }
 
 func main() {
