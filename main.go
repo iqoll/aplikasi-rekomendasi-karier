@@ -43,6 +43,37 @@ var daftarKarier = DataKarier{
 	{"Guru", "Pendidikan", "Mengajar"},
 }
 
+// Menu tampilan utama
+func tampilMenu() {
+	// I.S F.S menampilkan menu interface untuk user memilih jalannya aplikasi
+	fmt.Println("=== Aplikasi Rekomendasi Karier ===")
+	fmt.Println("1. Tambah Data Pengguna")
+	fmt.Println("2. Lihat Rekomendasi Karier")
+	fmt.Println("3. Edit Data")
+	fmt.Println("4. Hapus Data")
+	fmt.Println("5. Cari Data")
+	fmt.Println("6. Urutkan Data")
+	fmt.Println("7. Keluar")
+}
+
+// Tampil Menu Kategori Data
+func tampilMenuData() {
+	// I.S F.S menampilkan menu kategori data yang ada
+	fmt.Println("=== Kategori Data ===")
+	fmt.Println("1.Nama")
+	fmt.Println("2.Minat")
+	fmt.Println("3.Keahlian")
+}
+
+// Tampil Menu Daftar Pengguna
+func tampilMenuPengguna(pengguna *DataPengguna, jumlah *int) {
+	// I.S F.S menampilkan menu pengguna yang ada
+	fmt.Println("=== Daftar Pengguna ===")
+	for i := 0; i < *jumlah; i++ {
+		fmt.Printf("%d. %s \n", i+1, pengguna[i].nama)
+	}
+}
+
 func main() {
 	var pilihan int
 	// counter jumlah pengguna yang ada
