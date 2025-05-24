@@ -142,6 +142,97 @@ func tampilkanRekomendasi(p Pengguna) {
 	fmt.Scan(&kembali)
 }
 
+// Procedure Mengedit Data Pengguna
+func editData(pengguna *DataPengguna) {
+	// {I.S. Terdefinisi array pengguna
+	// F.S. Mengedit salah satu data pengguna (nama, minat, atau keahlian) apabila ditemukan berdasarkan nama yang diinputkan.}
+	var nama string
+	fmt.Println("=== Edit Data Pengguna ===")
+	fmt.Print("Masukkan nama pengguna yang ingin diedit: ")
+	fmt.Scan(&nama)
+	var angka int
+	cocokDitemukan := false
+
+	// mencari nama menggunakan algoritma sequential search
+	for i := 0; i < MAX_PENGGUNA; i++ {
+		if strings.ToLower(nama) == strings.ToLower(pengguna[i].nama) {
+			fmt.Print("Data ditemukan: \n\n")
+			fmt.Printf("Nama :%s \n", pengguna[i].nama)
+			fmt.Printf("Minat :%s \n", pengguna[i].minat)
+			fmt.Printf("Keahlian :%s \n", pengguna[i].keahlian)
+			cocokDitemukan = true
+
+			// Pemilihan kategori data yang akan diedit
+			tampilMenuData()
+			fmt.Print("Pilih nomor data yang mau di edit: ")
+			fmt.Scan(&angka)
+			if angka < 1 || angka > 3 {
+				fmt.Println("Nomor tidak valid.")
+			} else if angka == 1 {
+				fmt.Printf("Masukkan data nama yang baru: ")
+				fmt.Scan(&pengguna[i].nama)
+			} else if angka == 2 {
+				fmt.Printf("Masukkan data minat yang baru: ")
+				fmt.Scan(&pengguna[i].minat)
+			} else {
+				fmt.Printf("Masukkan data keahlian yang baru: ")
+				fmt.Scan(&pengguna[i].keahlian)
+			}
+		}
+	}
+	if !cocokDitemukan {
+		fmt.Printf("Maaf, data dengan nama '%s' tidak ditemukan.", nama)
+	}
+	var kembali string
+	fmt.Print("\n Ketik apa saja lalu tekan ENTER untuk kembali ke menu utama: ")
+	fmt.Scanln(&kembali)
+	fmt.Println("Kembali ke menu utama...")
+}
+
+// Procedure Menghapus Data Pengguna
+func hapusData(pengguna *DataPengguna, jumlah *int) {
+	// {I.S. Terdefinisi array pengguna sebanyak jumlah data.
+	//F.S. Menghapus data pengguna berdasarkan nama, lalu menggeser elemen array agar tidak ada celah, dan mengurangi nilai jumlah.}
+	var nama, yakin string
+	var j int
+	fmt.Println("=== Hapus Data Pengguna ===")
+	fmt.Print("Masukkan nama pengguna yang ingin dihapus: ")
+	fmt.Scan(&nama)
+	cocokDitemukan := false
+
+	for i := 0; i < MAX_PENGGUNA; i++ {
+		if strings.ToLower(nama) == strings.ToLower(pengguna[i].nama) {
+			fmt.Print("Data ditemukan: \n\n")
+			fmt.Printf("Nama :%s \n", pengguna[i].nama)
+			fmt.Printf("Minat :%s \n", pengguna[i].minat)
+			fmt.Printf("Keahlian :%s \n", pengguna[i].keahlian)
+			cocokDitemukan = true
+
+			fmt.Print("Apakah Anda yakin mau menghapus data ini? (Yes/ No)")
+			fmt.Scan(&yakin)
+
+			if yakin == "Yes" {
+				j = i
+				for j <= *jumlah-2 {
+					pengguna[j] = pengguna[j+1]
+					j = j + 1
+				}
+				*jumlah = *jumlah - 1
+				fmt.Printf("Data telah berhasil dihapus")
+			} else {
+				fmt.Printf("Data tidak jadi dihapus")
+			}
+		}
+	}
+	if !cocokDitemukan {
+		fmt.Printf("Maaf, data dengan nama '%s' tidak ditemukan.", nama)
+	}
+	var kembali string
+	fmt.Print("\n Ketik apa saja lalu tekan ENTER untuk kembali ke menu utama: ")
+	fmt.Scanln(&kembali)
+	fmt.Println("Kembali ke menu utama...")
+}
+
 func main() {
 	var pilihan int
 	// counter jumlah pengguna yang ada
@@ -158,7 +249,7 @@ func main() {
 		case 2:
 			lihatRekomen(daftarPengguna, jumlahPengguna)
 		case 3:
-			editData(&daftarPengguna, jumlahPengguna)
+			editData(&daftarPengguna)
 		case 4:
 			hapusData(&daftarPengguna, &jumlahPengguna)
 		case 5:
