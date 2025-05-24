@@ -233,6 +233,101 @@ func hapusData(pengguna *DataPengguna, jumlah *int) {
 	fmt.Println("Kembali ke menu utama...")
 }
 
+// Procedure Mencari Data Pengguna berdasarkan Kategori Data
+func cariData(pengguna DataPengguna, karier DataKarier, n int) {
+	// {I.S. Terdefinisi array pengguna sebanyak n data, dan array karier berisi daftar karier yang tersedia.
+	// F.S. Menampilkan daftar pengguna yang sesuai dengan suatu minat dan keahlian yang diminta user.}
+	var i, angka int
+	var cari string
+
+	tampilMenuData()
+	fmt.Println("Cari data berdasarkan: ")
+	fmt.Scanln(&angka)
+	if angka == 1 {
+		fmt.Println("Masukkan nama yang dicari: ")
+		fmt.Scanln(&cari)
+		for i = 0; i < n; i++ {
+			if pengguna[i].nama == cari {
+				fmt.Printf("Nama: %s \n", pengguna[i].nama)
+				fmt.Printf("Minat: %s \n", pengguna[i].minat)
+				fmt.Printf("Keahlian: %s \n", pengguna[i].keahlian)
+			}
+		}
+	} else if angka == 2 {
+		fmt.Println("Masukkan minat yang dicari: ")
+		fmt.Scanln(&cari)
+		for i = 0; i < MAX_KARIER; i++ {
+			if karier[i].minat == cari {
+				fmt.Println("- Rekomendasi Karir: ", karier[i].nama)
+				fmt.Println("- keahlian yang dibutuhkan: ", karier[i].keahlian)
+				fmt.Println()
+			}
+		}
+	} else {
+		fmt.Println("Masukkan keahlian yang dicari: ")
+		fmt.Scanln(&cari)
+		for i = 0; i < MAX_KARIER; i++ {
+			if karier[i].keahlian == cari {
+				fmt.Println("-Rekomendasi Karir: ", karier[i].nama)
+				fmt.Println("-jika Anda berminat pada bidang", karier[i].minat)
+				fmt.Println()
+			}
+		}
+	}
+}
+
+// Procedure Mengurutkan Data
+func urutkanData(pengguna *DataPengguna, n int) {
+	// {I.S. Terdefinisi array data pengguna sebanyak n
+	// F.S. Array pengguna terurut berdasarkan pilihan}
+
+	var angka, pass, i, j, min, max int
+	var temp Pengguna
+
+	fmt.Println("Urutkan data berdasarkan:")
+	fmt.Println("1. Urutan A-Z")
+	fmt.Println("2. Urutan Z-A")
+	fmt.Print("Pilihan: ")
+	fmt.Scanln(&angka)
+
+	if angka == 1 {
+		// Selection Sort A-Z
+		for pass = 0; pass < n; pass++ {
+			min = pass
+			for i = pass + 1; i < n; i++ {
+				if pengguna[i].nama < pengguna[min].nama {
+					min = i
+				}
+			}
+			temp = pengguna[pass]
+			pengguna[pass] = pengguna[min]
+			pengguna[min] = temp
+		}
+	} else if angka == 2 {
+		// Selection Sort Z-A
+		for pass = 0; pass < n; pass++ {
+			max = pass
+			for i = pass + 1; i < n; i++ {
+				if pengguna[i].nama > pengguna[max].nama {
+					max = i
+				}
+			}
+			temp = pengguna[pass]
+			pengguna[pass] = pengguna[max]
+			pengguna[max] = temp
+		}
+	} else {
+		fmt.Println("Pilihan tidak valid.")
+		return
+	}
+
+	// Tampilkan hasil setelah diurut
+	fmt.Println("=== Daftar Pengguna ===")
+	for j = 0; j < n; j++ {
+		fmt.Printf("%d. %s\n", j+1, pengguna[j].nama)
+	}
+}
+
 func main() {
 	var pilihan int
 	// counter jumlah pengguna yang ada
